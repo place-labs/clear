@@ -5,7 +5,7 @@ version: 0.8
 crystal: 0.35.1
 
 authors:
-   - Yacine Petitprez <anykeyh@gmail.com>
+  - Yacine Petitprez <anykeyh@gmail.com>
 
 description: Clear ORM is an advanced ORM focusing on PostgreSQL
 
@@ -21,7 +21,7 @@ dependencies:
     branch: master
   pg:
     github: will/crystal-pg
-    branch: master
+    version: 0.21.1+git.commit.cafe111fc28e366c219144d5f656c3718d7357dd
   inflector:
     github: phoffer/inflector.cr
     version: "~> 0.1.8"
