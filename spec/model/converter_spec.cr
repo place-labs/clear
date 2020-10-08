@@ -121,7 +121,7 @@ module ConverterSpec
   Clear::Model::Converter.add_converter("Hash(String, Int32) | Nil", Clear::Model::Converter::CountsConverter)
 
   describe "Unregistered Type Clear::Model::Converter" do
-    it "should create a new model with a field from a new converter with a new type", focus: true do
+    it "should create a new model with a field from a new converter with a new type" do
       body = {
         "rooms" => {
           "bed"     => 4,
