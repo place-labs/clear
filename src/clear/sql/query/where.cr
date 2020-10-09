@@ -36,7 +36,6 @@ module Clear::SQL::Query::Where
     where(Clear::Expression.ensure_node!(with Clear::Expression.new yield))
   end
 
-
   def where(**tuple)
     where(conditions: tuple)
   end
@@ -85,7 +84,6 @@ module Clear::SQL::Query::Where
     change!
   end
 
-
   # Build SQL `where` condition using a template string and
   # interpolating `?` characters with parameters given in a tuple or array.
   # ```crystal
@@ -100,7 +98,7 @@ module Clear::SQL::Query::Where
     return where(str, parameters) if @wheres.empty?
     old_clause = Clear::Expression::Node::AndArray.new(@wheres)
     @wheres.clear
-    @wheres << Clear::Expression::Node::DoubleOperator.new(old_clause, Clear::Expression::Node::Raw.new( Clear::Expression.raw_enum("(#{str})", parameters) ), "OR")
+    @wheres << Clear::Expression::Node::DoubleOperator.new(old_clause, Clear::Expression::Node::Raw.new(Clear::Expression.raw_enum("(#{str})", parameters)), "OR")
     change!
   end
 
@@ -117,10 +115,9 @@ module Clear::SQL::Query::Where
     return where(str, parameters) if @wheres.empty?
     old_clause = Clear::Expression::Node::AndArray.new(@wheres)
     @wheres.clear
-    @wheres << Clear::Expression::Node::DoubleOperator.new(old_clause, Clear::Expression::Node::Raw.new( Clear::Expression.raw("(#{str})", **parameters) ), "OR")
+    @wheres << Clear::Expression::Node::DoubleOperator.new(old_clause, Clear::Expression::Node::Raw.new(Clear::Expression.raw("(#{str})", **parameters)), "OR")
     change!
   end
-
 
   # Build custom SQL `where`
   #   beware of SQL injections!
@@ -137,7 +134,7 @@ module Clear::SQL::Query::Where
     old_clause = Clear::Expression::Node::AndArray.new(@wheres)
     @wheres = [
       Clear::Expression::Node::DoubleOperator.new(old_clause,
-      Clear::Expression::Node::Raw.new("(#{str})"), "OR")
+        Clear::Expression::Node::Raw.new("(#{str})"), "OR"),
     ]
     change!
   end
