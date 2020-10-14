@@ -52,7 +52,7 @@ module Clear
                 Bool | Char | Float32 | Float64 | Int8 | Int16 | Int32 | Int64 | BigDecimal | JSON::Any | JSON::Any::Type | PG::Geo::Box | PG::Geo::Circle |
                 PG::Geo::Line | PG::Geo::LineSegment | PG::Geo::Path | PG::Geo::Point |
                 PG::Geo::Polygon | PG::Numeric | Slice(UInt8) | String | Time |
-                UInt8 | UInt16 | UInt32 | UInt64 | Clear::Expression::UnsafeSql |
+                UInt8 | UInt16 | UInt32 | UInt64 | Clear::Expression::UnsafeSql | Hash(String, Int32) |
                 Nil
 
     include Clear::SQL::Logger

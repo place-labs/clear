@@ -110,6 +110,51 @@ module ConverterSpec
 
       converter.to_db(BigDecimal.new("-0.1029387192083710928371092837019283701982370918237"))
         .should eq(BigDecimal.new(BigInt.new("-1029387192083710928371092837019283701982370918237".to_big_i), 49))
+  class House
+    include Clear::Model
+    column id : Int64, primary: true, presence: false
+    column rooms : Hash(String, Int32), converter: "Hash(String, Int32)"
+    column available : Bool?
+  end
+
+  module Clear::Model::Converter::CountsConverter
+    def self.to_column(x) : Hash(String, Int32)?
+      case x
+      when Nil
+        nil
+      when ::JSON::Any
+        x.as_h?.try do |hash|
+          counts = hash.transform_values &.as_i?
+          counts.has_value?(nil) ? nil : counts.compact
+        end
+      when Hash(String, Int32)
+        x
+      else
+        raise "Cannot convert from #{x.class} to Hash(String, Int32)"
+      end
+    end
+
+    def self.to_db(x : Hash(String, Int32)?) : Clear::SQL::Any
+      x.to_json
+    end
+  end
+
+  Clear::Model::Converter.add_converter("Hash(String, Int32)", Clear::Model::Converter::CountsConverter)
+  Clear::Model::Converter.add_converter("Hash(String, Int32) | Nil", Clear::Model::Converter::CountsConverter)
+
+  describe "Unregistered Type Clear::Model::Converter" do
+    it "should create a new model with a field from a new converter with a new type" do
+      body = {
+        "rooms" => {
+          "bed"     => 4,
+          "bath"    => 3,
+          "kitchen" => 1,
+        },
+        "available" => true,
+      }
+      house = House.new(body)
+      house.rooms.should eq(body["rooms"])
+      house.available.should eq(true)
     end
   end
 end

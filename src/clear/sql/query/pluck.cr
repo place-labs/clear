@@ -3,14 +3,14 @@ module Clear::SQL::Query::Pluck
   # and return an array containing this field.
   #
   # ```crystal
-  #   User.query.pluck_col("id") # [1,2,3,4...]
+  # User.query.pluck_col("id") # [1,2,3,4...]
   # ```
   #
   # Note: It returns an array of `Clear::SQL::Any`. Therefore, you may want to use `pluck_col(str, Type)` to return
   #       an array of `Type`:
   #
   # ```crystal
-  #   User.query.pluck_col("id", Int64)
+  # User.query.pluck_col("id", Int64)
   # ```
   #
   # The field argument is a SQL fragment; it's not escaped (beware SQL injection) and allow call to functions
@@ -36,7 +36,7 @@ module Clear::SQL::Query::Pluck
   end
 
   # See `pluck_col(field)`
-  def pluck_col(field : String, type : T.class ) forall T
+  def pluck_col(field : String, type : T.class) forall T
     sql = self.clear_select.select(field).to_sql
     rs = Clear::SQL.log_query(sql) { Clear::SQL::ConnectionPool.with_connection(connection_name, &.query(sql)) }
 
@@ -54,9 +54,9 @@ module Clear::SQL::Query::Pluck
   # arguments:
   #
   # ```crystal
-  #   User.query.pluck("first_name", "last_name").each do |(first_name, last_name)|
-  #     #...
-  #   end
+  # User.query.pluck("first_name", "last_name").each do |(first_name, last_name)|
+  #   # ...
+  # end
   # ```
   def pluck(*fields)
     pluck(fields)
@@ -73,10 +73,10 @@ module Clear::SQL::Query::Pluck
     rs = Clear::SQL.log_query(sql) { Clear::SQL::ConnectionPool.with_connection(connection_name, &.query(sql)) }
 
     {% begin %}
-      o = [] of Tuple({% for k,v in T %}{{v.instance}},{% end %})
+      o = [] of Tuple({% for k, v in T %}{{v.instance}},{% end %})
 
       while rs.move_next
-        o << { {% for k,v in T  %} rs.read({{v.instance}}), {% end %}}
+        o << { {% for k, v in T %} rs.read({{v.instance}}), {% end %}}
       end
       o
     {% end %}
