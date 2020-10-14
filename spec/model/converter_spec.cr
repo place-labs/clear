@@ -110,6 +110,9 @@ module ConverterSpec
 
       converter.to_db(BigDecimal.new("-0.1029387192083710928371092837019283701982370918237"))
         .should eq(BigDecimal.new(BigInt.new("-1029387192083710928371092837019283701982370918237".to_big_i), 49))
+    end
+  end
+
   class House
     include Clear::Model
     column id : Int64, primary: true, presence: false

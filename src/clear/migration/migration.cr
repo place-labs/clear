@@ -69,9 +69,8 @@ module Clear::Migration
 
   module Helper
     TYPE_MAPPING = {
-      "string" => "text",
-      "int32"  => "int",
-      
+      "string"     => "text",
+      "int32"      => "int",
       "int64"      => "bigint",
       "long"       => "bigint",
       "bigdecimal" => "numeric",

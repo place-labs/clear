@@ -887,7 +887,10 @@ module ModelSpec
         expect_raises(Clear::SQL::Error) do
           data.save!
         end
-        
+      end
+    end
+  end
+
   describe "Clear::Model::JSONDeserialize" do
     it "can create a model json IO" do
       user_body = {first_name: "foo"}
