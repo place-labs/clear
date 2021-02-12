@@ -61,7 +61,7 @@ module Clear::Model::HasSaving
   #
   # Example:
   #
-  # ```crystal
+  # ```
   # u = User.new
   # if u.save
   #   puts "User correctly saved !"
@@ -75,7 +75,7 @@ module Clear::Model::HasSaving
   #
   # Example:
   #
-  # ```crystal
+  # ```
   # u = User.new id: 123, email: "email@example.com"
   # u.save(-> (qry) { qry.on_conflict.do_update{ |u| u.set(email: "email@example.com") } #update
   # # IMPORTANT NOTICE: user may not be saved, but will be still detected as persisted !
@@ -83,7 +83,7 @@ module Clear::Model::HasSaving
   #
   # You may want to use a block for `on_conflict` optional parameter:
   #
-  # ```crystal
+  # ```
   # u = User.new id: 123, email: "email@example.com"
   # u.save do |qry|
   #    qry.on_conflict.do_update{ |u| u.set(email: "email@example.com")

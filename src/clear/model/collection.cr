@@ -3,7 +3,7 @@ require "../sql/select_query"
 # Model definition is made by adding the `Clear::Model` mixin in your class.
 # ## Simple Model
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #
@@ -15,7 +15,7 @@ require "../sql/select_query"
 #
 # Now, you can play with your model:
 #
-# ```crystal
+# ```
 # row = MyModel.new # create an empty row
 # row.my_column = "This is a content"
 # row.save! # insert the new row in the database !
@@ -25,7 +25,7 @@ require "../sql/select_query"
 # A model into a module will prepend the module name before, so `Logistic::MyModel` will check for `logistic_my_models` in your database.
 # You can force a specific table name using:
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #   self.table = "another_table_name"
@@ -42,7 +42,7 @@ require "../sql/select_query"
 #
 # For example, this code will compile:
 #
-# ```crystal
+# ```
 # row = MyModel.new # create an empty row
 # puts row.my_column
 # ```
@@ -51,14 +51,14 @@ require "../sql/select_query"
 #
 # Same way, trying to save the object will raise an error:
 #
-# ```crystal
+# ```
 # row.save      # Will return false
 # pp row.errors # Will tell you than `my_column` presence is mandatory.
 # ```
 #
 # Thanks to expressiveness of the Crystal language, we can handle presence validation by simply using the `Nilable` type in crystal:
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #
@@ -76,7 +76,7 @@ require "../sql/select_query"
 #
 # Queries are fetchable using `each`:
 #
-# ```crystal
+# ```
 # MyModel.query.each do |model|
 #   # Do something with your model here.
 # end
@@ -110,7 +110,7 @@ require "../sql/select_query"
 #
 # To setup a primary key, you can add the modifier `primary: true` to the column:
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #
@@ -122,7 +122,7 @@ require "../sql/select_query"
 # Note the flag `presence: false` added to the column. This tells Clear than presence checking on save is not mandatory. Usually this happens if you setup a default value in postgres. In the case of our primary key `id`, we use a serial auto-increment default value.
 # Therefore, saving the model without primary key will works. The id will be fetched after insertion:
 #
-# ```crystal
+# ```
 # m = MyModel
 # m.save!
 # m.id # Now the id value is setup.
@@ -134,7 +134,7 @@ require "../sql/select_query"
 #
 # ### Timestamps
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #   timestamps # Will map the two columns 'created_at' and 'updated_at', and map some hooks to update their values.
@@ -145,7 +145,7 @@ require "../sql/select_query"
 #
 # ### With Serial Pkey
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #   with_serial_pkey "my_primary_key"

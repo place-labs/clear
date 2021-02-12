@@ -118,7 +118,7 @@ module Clear::Model::HasRelations
   #
   # Example:
   #
-  # ```crystal
+  # ```
   # class User
   #   include Clear::Model
   #   # ...
