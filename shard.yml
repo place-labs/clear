@@ -2,7 +2,7 @@ name: clear
 
 version: 0.9
 
-crystal: 0.35.1
+crystal: 0.36.1
 
 authors:
    - Yacine Petitprez <anykeyh@gmail.com>
