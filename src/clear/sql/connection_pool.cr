@@ -12,7 +12,7 @@ class Clear::SQL::ConnectionPool
   #   this strategy provides easy usage of multiple statement connection (like BEGIN/ROLLBACK features).
 
   # Specify whether to refresh the connection upon error
-  FAIL_SAFE = ENV["FAIL_SAFE"]? == "true"
+  PG_RECONNECT = ENV["PG_RECONNECT"]? == "true"
 
   def self.with_connection(target : String, &block)
     fiber_target = {target, Fiber.current}
@@ -21,7 +21,7 @@ class Clear::SQL::ConnectionPool
 
     cnx = @@fiber_connections[fiber_target]?
 
-    {% if !FAIL_SAFE %}
+    if !PG_RECONNECT
       if cnx
         yield cnx
       else
@@ -34,7 +34,7 @@ class Clear::SQL::ConnectionPool
           end
         end
       end
-    {% else %}
+    else
       begin
         if cnx
           yield cnx
@@ -51,6 +51,6 @@ class Clear::SQL::ConnectionPool
       rescue DB::ConnectionLost
         Clear::Migration::Manager.instance.refresh
       end
-    {% end %}
+    end
   end
 end
