@@ -39,10 +39,10 @@ def initdb
 end
 
 Spec.before_suite do
-  {% if flag?(:quiet) %}
-    ::Log.setup(:warning)
+  {% if flag?("quiet") %}
+    ::Log.setup("warning")
   {% else %}
-    ::Log.setup(:debug)
+    ::Log.setup("debug")
   {% end %}
 end
 

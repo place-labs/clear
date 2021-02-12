@@ -19,7 +19,7 @@
 #
 # As with Interval, you might wanna use it as a column (use underlying `time` type in PostgreSQL):
 #
-# ```crystal
+# ```
 # class MyModel
 #   include Clear::Model
 #
