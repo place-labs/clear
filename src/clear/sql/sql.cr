@@ -113,6 +113,19 @@ module Clear
     # init("postgres://postgres@localhost:5432/database") # use "default" connection
     # init("secondary_db", "postgres://postgres@localhost:5432/secondary_db")
     # ```
+    #
+    # In production environment, please specify a significant amount of max_idle_pool_size
+    # and a cap on max_pool_size, instead of the unlimited default depending on the 
+    # managed service limit or hosted PostgreSQL's configs. For a list of up-to-date args,
+    # please view crystallang/crystal-db. Default paramaters for crystal-db/0.10.0 is as follows:
+    #   - `initial_pool_size` (default 1)
+    #   - `max_pool_size` (default 0 = unlimited)
+    #   - `max_idle_pool_size` (default 1)
+    #   - `checkout_timeout` (default 5.0)
+    #   - `retry_attempts` (default 1)
+    #   - `retry_delay` (in seconds, default 1.0)
+    # An example of connection string with args:
+    # postgres://postgres:password@localhost:5432/clear_spec?retry_attempts=1&retry_delay=1&initial_pool_size=5
     def init(url : String)
       Clear::SQL::ConnectionPool.init(url, "default")
     end
