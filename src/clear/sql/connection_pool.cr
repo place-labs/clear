@@ -10,6 +10,10 @@ class Clear::SQL::ConnectionPool
   # Retrieve a connection from the connection pool, or wait for it.
   # If the current Fiber already has a connection, the connection is returned;
   #   this strategy provides easy usage of multiple statement connection (like BEGIN/ROLLBACK features).
+
+  # Specify whether to refresh the connection upon error
+  FAIL_SAFE = ENV["FAIL_SAFE"]? == "true"
+
   def self.with_connection(target : String, &block)
     fiber_target = {target, Fiber.current}
 
@@ -17,17 +21,36 @@ class Clear::SQL::ConnectionPool
 
     cnx = @@fiber_connections[fiber_target]?
 
-    if cnx
-      yield cnx
-    else
-      database.using_connection do |new_connection|
-        begin
-          @@fiber_connections[fiber_target] = new_connection
-          yield new_connection
-        ensure
-          @@fiber_connections.delete(fiber_target)
+    {% if !FAIL_SAFE %}
+      if cnx
+        yield cnx
+      else
+        database.using_connection do |new_connection|
+          begin
+            @@fiber_connections[fiber_target] = new_connection
+            yield new_connection
+          ensure
+            @@fiber_connections.delete(fiber_target)
+          end
         end
       end
-    end
+    {% else %}
+      begin
+        if cnx
+          yield cnx
+        else
+          database.using_connection do |new_connection|
+            begin
+              @@fiber_connections[fiber_target] = new_connection
+              yield new_connection
+            ensure
+              @@fiber_connections.delete(fiber_target)
+            end
+          end
+        end
+      rescue DB::ConnectionLost
+        Clear::Migration::Manager.instance.refresh
+      end
+    {% end %}
   end
 end

@@ -24,3 +24,7 @@ shards:
     git: https://github.com/will/crystal-pg.git
     version: 0.23.1+git.commit.cafe039cfd6340a271e81603943bb1975f5a91f5
 
+  secrets-env:
+    git: https://github.com/place-labs/secrets-env.git
+    version: 1.3.0
+
