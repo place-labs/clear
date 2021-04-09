@@ -146,7 +146,7 @@ module Clear::Model::HasColumns
   #   when instantiating or updating a new model from json through `.from_json` methods from
   #   the `Clear::Model::JSONDeserialize` module.
   #
-  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, api_type = nil, api_read_only = nil, api_write_only = nil, example = nil)
+  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, example = nil)
     {% _type = name.type %}
     {%
       unless converter
@@ -181,14 +181,7 @@ module Clear::Model::HasColumns
         crystal_variable_name: name.var,
         presence:              presence,
         mass_assign:           mass_assign,
-      }
-
-      # OpenAPI
-      COLUMNS["#{db_column_name.id}"]["openapi"] = {
-        type:       api_type,
-        read_only:  api_read_only,
-        write_only: api_write_only,
-        example:    example,
+        example:               example, # OpenAPI
       }
     %}
   end
