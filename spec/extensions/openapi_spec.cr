@@ -136,8 +136,19 @@ class ClearModelExample
   include Clear::Model
   extend OpenAPI::Generator::Serializable
 
-  column id : Int64, primary: true
-  column email : String
+  column id : Int64, primary: true, api_read_only: true, example: "123"
+  column email : String, api_write_only: true, example: "default@gmail.com"
+end
+
+struct ClearModelExampleCopy
+  extend OpenAPI::Generator::Serializable
+  include JSON::Serializable
+
+  @[OpenAPI::Field(read_only: true, example: "123")]
+  property id : Int64
+
+  @[OpenAPI::Field(write_only: true, example: "default@gmail.com")]
+  property email : String
 end
 
 describe OpenAPI::Generator::Serializable do
@@ -155,6 +166,8 @@ describe OpenAPI::Generator::Serializable do
   end
 
   it "should deal with clear" do
-    pp! ClearModelExample.generate_schema
+    json_schema = ::ClearModelExample.generate_schema.to_pretty_json
+    json_schema_copy = ClearModelExampleCopy.generate_schema.to_pretty_json
+    json_schema.should eq(json_schema_copy)
   end
 end
