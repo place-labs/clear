@@ -46,9 +46,12 @@ class Category
   include Clear::Model
   self.table = "model_categories"
 
-  column id : Int32, primary: true, presence: false
+  column id : Int64, primary: true, presence: false
 
   column name : String
+
+  has_many categories : Category
+  belongs_to category : Category?
 
   has_many posts : Post
   has_many users : User, through: :posts
@@ -150,6 +153,8 @@ class ExampleModelMigration1
   def change(dir)
     create_table "model_categories" do |t|
       t.column "name", "string"
+
+      t.references to: "model_categories", name: "model_category_id", null: true, on_delete: "set null"
 
       t.timestamps
     end
