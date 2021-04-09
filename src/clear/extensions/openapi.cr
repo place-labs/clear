@@ -1,6 +1,51 @@
 require "../../clear"
 require "openapi-generator"
 
+# The `Serializable` module automatically generates an OpenAPI Operations representation of the class or struct when extended.
+#
+# ### Example
+#
+# ```
+# class ClearModelExample
+#   include Clear::Model
+#   extend OpenAPI::Generator::Serializable
+
+#   column id : Int64, primary: true, mass_assign: false, example: "123"
+#   column email : String, mass_assign: true, example: "default@gmail.com"
+# end
+# # => {
+# #     "required": [
+# #       "id",
+# #       "email"
+# #     ],
+# #     "type": "object",
+# #     "properties": {
+# #       "id": {
+# #         "type": "integer",
+# #         "readOnly": true,
+# #         "example": "123"
+# #       },
+# #       "email": {
+# #         "type": "string",
+# #         "writeOnly": true,
+# #         "example": "default@gmail.com"
+# #       }
+# #     }
+# #   }
+# ```
+#
+# ### Usage
+#
+# Extending this module adds a `self.to_openapi_schema` that returns an OpenAPI representation
+# inferred from the shape of the class or struct.
+#
+# The class name is also registered as a global [component schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#components-object)
+# and will be available for referencing from any `Controller` annotation from a [reference object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#referenceObject).
+#
+# **See:** `OpenAPI::Generator::Controller::Schema.ref`
+#
+# NOTE: **Calling `to_openapi_schema` programatically is unnecessary.
+# The `Generator` will take care of serialization while producing the openapi yaml file.**
 module OpenAPI::Generator::Serializable
   # Serialize the class into an `OpenAPI::Schema` representation.
   #

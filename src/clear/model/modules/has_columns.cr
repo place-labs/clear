@@ -146,6 +146,9 @@ module Clear::Model::HasColumns
   #   when instantiating or updating a new model from json through `.from_json` methods from
   #   the `Clear::Model::JSONDeserialize` module.
   #
+  # * `example : String (default = nil)`: Use this option only if you have extended
+  #   OpenAPI::Generator::Serializable to declare an example for this field
+  #
   macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, example = nil)
     {% _type = name.type %}
     {%
