@@ -1,6 +1,8 @@
 require "spec"
 require "json"
+require "big"
 
+require "../../src/clear/error_messages"
 require "../../src/clear/extensions/openapi"
 
 struct Model
@@ -136,8 +138,8 @@ class ClearModelExample
   include Clear::Model
   extend OpenAPI::Generator::Serializable
 
-  column id : Int64, primary: true, api_read_only: true, example: "123"
-  column email : String, api_write_only: true, example: "default@gmail.com"
+  column id : Int64, primary: true, mass_assign: false, example: "123"
+  column email : String, mass_assign: true, example: "default@gmail.com"
 end
 
 struct ClearModelExampleCopy
@@ -152,20 +154,18 @@ struct ClearModelExampleCopy
 end
 
 describe OpenAPI::Generator::Serializable do
-  it "should serialize an object into an openapi schema" do
+  it "should serialize an object into an openapi schema if it has not included Clear::Model" do
     json_schema = ::Model.generate_schema.to_pretty_json
     json_schema.should eq ::Model::SCHEMA
 
     inner_schema = ::Model::InnerModel.generate_schema.to_pretty_json
     inner_schema.should eq ::Model::InnerModel::SCHEMA
-  end
 
-  it "should serialize a complex object into an openapi schema" do
     json_schema = ::Model::ComplexModel.generate_schema.to_pretty_json
     json_schema.should eq ::Model::ComplexModel::SCHEMA
   end
 
-  it "should deal with clear" do
+  it "should serialize a Clear Model into an openapi schema" do
     json_schema = ::ClearModelExample.generate_schema.to_pretty_json
     json_schema_copy = ClearModelExampleCopy.generate_schema.to_pretty_json
     json_schema.should eq(json_schema_copy)
