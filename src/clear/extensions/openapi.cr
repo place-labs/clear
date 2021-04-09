@@ -17,11 +17,19 @@ module OpenAPI::Generator::Serializable
       \{% for name, settings in @type.constant("COLUMNS") %}
         \{% types = settings[:type].resolve.union_types %}
         \{% schema_key = settings["crystal_variable_name"].id %}
+        \{% as_type = settings["openapi"] && settings["openapi"]["type"] && settings["openapi"]["type"].types.map(&.resolve) %}
+        \{% read_only = settings["openapi"] && settings["openapi"]["read_only"] %}
+        \{% write_only = settings["openapi"] && settings["openapi"]["write_only"] %}
+        \{% example = settings["openapi"] && settings["openapi"]["example"] %}
 
         ::OpenAPI::Generator::Serializable.generate_schema(
           schema,
           types: \{{types}},
           schema_key: \{{schema_key}},
+          as_type: \{{as_type}},
+          read_only: \{{read_only}},
+          write_only: \{{write_only}},
+          example: \{{example}}
         )
       \{% end %}
       # If not a Clear Model
