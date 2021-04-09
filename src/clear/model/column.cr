@@ -1,5 +1,4 @@
 require "db"
-require "../error_messages"
 
 # A column of a Model
 # Provide some methods like:

@@ -2,7 +2,6 @@ require "../expression/expression"
 
 require "pg"
 require "db"
-require "big"
 
 require "./errors"
 require "./logger"
