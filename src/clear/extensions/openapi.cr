@@ -69,7 +69,7 @@ module OpenAPI::Generator::Serializable
           types: \{{types}},
           schema_key: \{{schema_key}},
           read_only: \{{!settings["mass_assign"]}},
-          write_only: \{{settings["mass_assign"]}},
+          write_only: \{{!settings["serialize"]}},
           example: \{{example}}
         )
       \{% end %}
