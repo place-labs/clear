@@ -139,7 +139,7 @@ class ClearModelExample
   extend OpenAPI::Generator::Serializable
 
   column id : Int64, primary: true, mass_assign: false, example: "123"
-  column email : String, serialize: false, example: "default@gmail.com"
+  column email : String, write_only: true, example: "default@gmail.com"
 end
 
 struct ClearModelExampleCopy
