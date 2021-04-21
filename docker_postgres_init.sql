@@ -11,4 +11,4 @@ CREATE DATABASE clear_secondary_spec
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
-CREATE TABLE clear_secondary_spec.models_post_stats (id serial PRIMARY KEY, post_id INTEGER);
+CREATE TABLE models_post_stats (id serial PRIMARY KEY, post_id INTEGER);
