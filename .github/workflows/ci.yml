@@ -15,4 +15,4 @@ jobs:
     steps:
       - name: Run docker-compose
         run: |
-          docker-compose up --build --exit-code-from clear
+          docker compose up --build --exit-code-from clear
