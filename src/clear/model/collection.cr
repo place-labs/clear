@@ -471,6 +471,8 @@ module Clear::Model
     # Basically a fancy way to write `OFFSET x LIMIT 1`
     def [](off, fetch_columns = false) : T
       self[off, fetch_columns]?.not_nil!
+    rescue NilAssertionError
+      raise Clear::SQL::RecordNotFoundError.new
     end
 
     # Basically a fancy way to write `OFFSET x LIMIT 1`
@@ -503,6 +505,8 @@ module Clear::Model
     # A convenient way to write `where{ condition }.first!`
     def find!(tuple : NamedTuple, fetch_columns = false) : T
       where(tuple).first(fetch_columns).not_nil!
+    rescue NilAssertionError
+      raise Clear::SQL::RecordNotFoundError.new
     end
 
     # Returns a model using primary key equality
