@@ -9,10 +9,10 @@ on:
     branches: [ develop, master ]
 
 jobs:
-  build:
+  docker:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
-
     steps:
-      - name: Create databases
+      - name: Run docker-compose
         run: |
           docker-compose up --build --exit-code-from clear

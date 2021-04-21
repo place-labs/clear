@@ -26,6 +26,7 @@ services:
     container_name: clear_test
     restart: always
     environment:
+      ENV: docker-compose
       PRIMARY_DB: ${PRIMARY_DB:-postgresql://postgres:password@postgres:5432/clear_spec}
       SECONDARY_DB: ${SECONDARY_DB:-postgres://postgres:password@postgres:5432/clear_secondary_spec}
     depends_on:
