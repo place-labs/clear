@@ -11,8 +11,8 @@ class ::Crypto::Bcrypt::Password
   DEFAULT_COST = 4
 end
 
-DB_ENV = ENV.fetch("ENV", "local")
-
+DB_ENV  = ENV.fetch("ENV", "local")
+DB_HOST = ENV.fetch("DB_HOST", "localhost")
 DB_NAME = ENV.fetch("DB_NAME", "clear_db")
 
 def initdb
@@ -30,12 +30,13 @@ def initdb
     system("docker exec -it #{DB_NAME} psql -c 'DROP DATABASE IF EXISTS clear_secondary_spec;' -U postgres")
     system("docker exec -it #{DB_NAME} psql -c 'CREATE DATABASE clear_secondary_spec;' -U postgres")
     system("docker exec -it #{DB_NAME} psql -c 'CREATE TABLE models_post_stats (id serial PRIMARY KEY, post_id INTEGER);' -U postgres clear_secondary_spec")
+  elsif DB_ENV == "ci"
   else
     raise ArgumentError.new("Invalid ENV value")
   end
 
-  Clear::SQL.init("postgres://postgres:password@localhost:5432/clear_spec?retry_attempts=1&retry_delay=1&initial_pool_size=5")
-  Clear::SQL.init("secondary", "postgres://postgres:password@localhost:5432/clear_secondary_spec?retry_attempts=1&retry_delay=1&initial_pool_size=5")
+  Clear::SQL.init("postgres://postgres:password@#{DB_HOST}:5432/clear_spec?retry_attempts=1&retry_delay=1&initial_pool_size=5")
+  Clear::SQL.init("secondary", "postgres://postgres:password@#{DB_HOST}:5432/clear_secondary_spec?retry_attempts=1&retry_delay=1&initial_pool_size=5")
 end
 
 Spec.before_suite do
