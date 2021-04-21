@@ -24,9 +24,17 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      - name: Create databases
+        run: |
+          PGPASSWORD=password psql -U postgres -tc "DROP DATABASE IF EXISTS clear_spec;"
+          PGPASSWORD=password psql -U postgres -tc "CREATE DATABASE clear_spec;
+          PGPASSWORD=password psql -U postgres -tc "DROP DATABASE IF EXISTS clear_secondary_spec;"
+          PGPASSWORD=password psql -U postgres -tc "CREATE DATABASE clear_secondary_spec;"
+          PGPASSWORD=password psql -U postgres -tc "CREATE TABLE clear_secondary_spec.models_post_stats (id serial PRIMARY KEY, post_id INTEGER);"
+
       - uses: actions/checkout@v2
       - uses: oprypin/install-crystal@v1
         with:
           crystal: 1.0.0
       - run: shards install --ignore-crystal-version
-      - run: crystal spec -Dquiet --warnings=all
+      - run: ENV=ci DB_HOST=postgres crystal spec -Dquiet --warnings=all
