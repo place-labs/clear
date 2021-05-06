@@ -146,10 +146,10 @@ module Clear::Model::HasColumns
   #   when instantiating or updating a new model from json through `.from_json` methods from
   #   the `Clear::Model::JSONDeserialize` module.
   #
-  # * `write_only : Bool (default = true)`: same as `ignore_serialize`: turn on/ off serialization
-  #   of a field when doing `.to_json` on the model
+  # * `ignore_serialize : Bool (default = true)`: same as JSON Annotation `ignore_serialize`:
+  #   turn on/ off serialization of a field when doing `.to_json` on the model
   #
-  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, write_only = false)
+  macro column(name, primary = false, converter = nil, column_name = nil, presence = true, mass_assign = true, ignore_serialize = false)
     {% _type = name.type %}
     {%
       unless converter
@@ -184,7 +184,7 @@ module Clear::Model::HasColumns
         crystal_variable_name: name.var,
         presence:              presence,
         mass_assign:           mass_assign,
-        write_only:            write_only,
+        ignore_serialize:      ignore_serialize,
       }
     %}
   end
@@ -428,7 +428,7 @@ module Clear::Model::HasColumns
     def to_json(json : ::JSON::Builder, emit_nulls = false)
       json.object do
         {% for name, settings in COLUMNS %}
-          {% unless settings[:write_only] %}
+          {% unless settings[:ignore_serialize] %}
             if emit_nulls || @{{settings[:crystal_variable_name]}}_column.defined?
               json.field {{settings[:db_column_name]}} do
                 @{{settings[:crystal_variable_name]}}_column.value(nil).to_json(json)
