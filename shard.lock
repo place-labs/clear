@@ -6,7 +6,7 @@ shards:
 
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 0.14.2
+    version: 0.14.3
 
   db:
     git: https://github.com/crystal-lang/crystal-db.git
@@ -19,14 +19,6 @@ shards:
   inflector:
     git: https://github.com/anykeyh/inflector.cr.git
     version: 0.1.8+git.commit.dc5c898b0a834617d8b3ff73ac5a2239bd9fc019
-
-  open_api:
-    git: https://github.com/elbywan/open_api.cr.git
-    version: 1.3.0
-
-  openapi-generator:
-    git: https://github.com/place-labs/openapi-generator.git
-    version: 0.4.0+git.commit.74c0446dfd28267143b5526fc0731b60b9ccb1c2
 
   pg:
     git: https://github.com/will/crystal-pg.git

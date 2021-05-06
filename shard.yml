@@ -27,9 +27,6 @@ dependencies:
   inflector:
     github: anykeyh/inflector.cr
     branch: master
-  openapi-generator:
-    github: place-labs/openapi-generator
-    branch: master
 
 development_dependencies:
   ameba:

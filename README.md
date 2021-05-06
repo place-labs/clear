@@ -15,8 +15,6 @@ You can deal out of the box with jsonb, tsvectors, cursors, CTE, bcrypt password
 array, uuid primary key, foreign constraints... and other things !
 It also has a powerful DSL to construct `where` and `having` clauses.
 
-There is also an extension to integrate with OpenAPI::Generator::Serializable
-
 The philosophy beneath is to please me (and you !) with emphasis made on business
 code readability and minimal setup.
 
