@@ -32,6 +32,13 @@ module Clear::Migration
       add_index(["updated_at"])
     end
 
+    def timestamps_unix(null = false)
+      add_column(:created_at, :bigint, null: null, default: "EXTRACT(EPOCH FROM CURRENT_TIMESTAMP)")
+      add_column(:updated_at, :bigint, null: null, default: "EXTRACT(EPOCH FROM CURRENT_TIMESTAMP)")
+      add_index(["created_at"])
+      add_index(["updated_at"])
+    end
+
     def references(to, name : String? = nil, on_delete = "restrict", type = "bigint",
                    null = false, foreign_key = "id", primary = false)
       name ||= to.singularize.underscore + "_id"
