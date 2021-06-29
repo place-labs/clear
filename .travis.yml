@@ -1,9 +1,0 @@
-language: crystal
-script:
-- make test
-services:
-- postgresql
-before_script:
-- psql -V
-addons:
-  postgresql: '9.6'

@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres
+    container_name: clear_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: clear_spec
+    volumes:
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+    ports:
+      - "5432:5432"
+
+  # API
+  clear:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: clear_test
+    restart: always
+    environment:
+      ENV: docker-compose
+      PRIMARY_DB: ${PRIMARY_DB:-postgresql://postgres:password@postgres:5432/clear_spec}
+      SECONDARY_DB: ${SECONDARY_DB:-postgres://postgres:password@postgres:5432/clear_secondary_spec}
+    depends_on:
+      - postgres
+    ports:
+      - 4000:8080
