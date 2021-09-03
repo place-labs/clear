@@ -1,0 +1,43 @@
+name: CI
+on:
+  push:
+
+jobs:
+  style:
+    name: Style
+    runs-on: ubuntu-latest
+    container: crystallang/crystal:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Format
+        run: crystal tool format --check
+      - name: Lint
+        uses: crystal-ameba/github-action@v0.2.12
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    runs-on: ubuntu-latest
+    name: "Test - crystal: ${{ matrix.crystal }}, stable: ${{ matrix.stable }}"
+    continue-on-error: ${{ !matrix.stable }}
+    strategy:
+      matrix:
+        crystal:
+          - 1.0.0
+          - 1.1.1
+        stable: [true]
+        include:
+          - crystal: nightly
+            stable: false
+    services:
+      postgres:
+        image: postgres:9.6.23-alpine3.14
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v2
+      - uses: oprypin/install-crystal@v1
+        with:
+          crystal: ${{ matrix.crystal }}
+      - name: Test
+        run: make test
