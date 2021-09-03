@@ -8,7 +8,7 @@ class Clear::SQL::ConnectionPool
   end
 
   # Specify whether to refresh the connection upon error
-  class_property? reconnect = ENV["PG_RECONNECT"]?.presence.try(&.downcase).in?("1", "true")
+  class_property? reconnect : Bool = ENV["PG_RECONNECT"]?.presence.try(&.downcase).in?("1", "true")
 
   # Retrieve a connection from the connection pool, or wait for it.
   # If the current Fiber already has a connection, the connection is returned;
