@@ -14,10 +14,9 @@ class Clear::SQL::ConnectionPool
     fiber_target = {target, Fiber.current}
 
     database = @@databases.fetch(target) { raise Clear::ErrorMessages.uninitialized_db_connection(target) }
-
     cnx = @@fiber_connections[fiber_target]?
 
-    if cnx
+    if cnx && !cnx.closed?
       yield cnx
     else
       database.using_connection do |new_connection|
