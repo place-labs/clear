@@ -36,6 +36,9 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          sudo apt update
+          sudo apt install --yes --no-install-recommends postgresql-client
       - uses: oprypin/install-crystal@v1
         with:
           crystal: ${{ matrix.crystal }}
