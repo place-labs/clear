@@ -17,23 +17,23 @@ class Clear::SQL::ConnectionPool
     fiber_target = {target, Fiber.current}
 
     database = @@databases.fetch(target) { raise Clear::ErrorMessages.uninitialized_db_connection(target) }
-
-    begin
-      if cnx = @@fiber_connections[fiber_target]?
-        yield cnx
-      else
-        database.using_connection do |new_connection|
-          begin
-            @@fiber_connections[fiber_target] = new_connection
-            yield new_connection
-          ensure
-            @@fiber_connections.delete(fiber_target)
-          end
+    if fiber_connection = @@fiber_connections[fiber_target]?
+      begin
+        yield fiber_connection
+      rescue error : DB::ConnectionLost
+        @@fiber_connections.delete(fiber_target)
+        fiber_connection.release
+        raise error
+      end
+    else
+      database.using_connection do |new_connection|
+        begin
+          @@fiber_connections[fiber_target] = new_connection
+          yield new_connection
+        ensure
+          @@fiber_connections.delete(fiber_target)
         end
       end
-    rescue error : DB::ConnectionLost
-      Clear::Migration::Manager.instance.refresh if reconnect?
-      raise error
     end
   end
 end
