@@ -7,9 +7,6 @@ class Clear::SQL::ConnectionPool
     @@databases[name] = DB.open(uri)
   end
 
-  # Specify whether to refresh the connection upon error
-  class_property? reconnect : Bool = ENV["PG_RECONNECT"]?.presence.try(&.downcase).in?("1", "true")
-
   # Retrieve a connection from the connection pool, or wait for it.
   # If the current Fiber already has a connection, the connection is returned;
   #   this strategy provides easy usage of multiple statement connection (like BEGIN/ROLLBACK features).
@@ -18,6 +15,7 @@ class Clear::SQL::ConnectionPool
 
     database = @@databases.fetch(target) { raise Clear::ErrorMessages.uninitialized_db_connection(target) }
     cnx = @@fiber_connections[fiber_target]?
+
     if cnx && !cnx.closed?
       yield cnx
     else
