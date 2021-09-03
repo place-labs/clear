@@ -181,7 +181,7 @@ class Clear::SQL::InsertQuery
     v.map_with_index { |row, idx|
       raise QueryBuildingError.new "No value to insert (at row ##{idx})" if row.empty?
 
-      "(" + row.join(", "){ |x| Clear::Expression[x] } + ")"
+      "(" + row.join(", ") { |x| Clear::Expression[x] } + ")"
     }.join(",\n")
   end
 
