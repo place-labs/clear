@@ -24,7 +24,7 @@ dependencies:
     branch: master
   pg:
     github: place-labs/crystal-pg
-    version: master
+    branch: master
   inflector:
     github: anykeyh/inflector.cr
     branch: master
