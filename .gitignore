@@ -7,7 +7,7 @@
 /test
 /docs
 /coverage/
-.lock
+shard.lock
 
 /bin/crystal-coverage*
 /bin/ameba

@@ -16,15 +16,17 @@ class Clear::SQL::ConnectionPool
     database = @@databases.fetch(target) { raise Clear::ErrorMessages.uninitialized_db_connection(target) }
     cnx = @@fiber_connections[fiber_target]?
 
-    if cnx && !cnx.closed?
-      yield cnx
-    else
-      database.using_connection do |new_connection|
-        begin
-          @@fiber_connections[fiber_target] = new_connection
-          yield new_connection
-        ensure
-          @@fiber_connections.delete(fiber_target)
+    database.retry do
+      if cnx && !cnx.closed?
+        yield cnx
+      else
+        database.using_connection do |new_connection|
+          begin
+            @@fiber_connections[fiber_target] = new_connection
+            yield new_connection
+          ensure
+            @@fiber_connections.delete(fiber_target)
+          end
         end
       end
     end
