@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 shards:
   admiral:
     git: https://github.com/jwaldrip/admiral.cr.git
@@ -23,4 +23,3 @@ shards:
   pg:
     git: https://github.com/will/crystal-pg.git
     version: 0.24.0
-
