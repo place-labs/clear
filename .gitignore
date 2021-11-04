@@ -17,10 +17,10 @@ shard.lock
 /test.cr
 
 # will migrate to github action one day
-/.github
 /.git-stats
 
 # deps of some tools
 /node_modules
 yarn.lock
 package.json
+/data/
