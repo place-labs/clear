@@ -40,9 +40,9 @@ end
 
 Spec.before_suite do
   {% if flag?(:quiet) %}
-    ::Log.setup(:warn)
+    ::Log.setup(level: Log::Severity::Warn)
   {% else %}
-    ::Log.setup("debug")
+    ::Log.setup(level: Log::Severity::Debug)
   {% end %}
 end
 
@@ -51,10 +51,19 @@ def reinit_migration_manager
 end
 
 def temporary(&block)
+  exception = nil
+
   Clear::SQL.with_savepoint do
-    yield
+    begin
+      yield
+    rescue e
+      exception = e
+    end
+  ensure
     Clear::SQL.rollback
   end
+
+  raise exception if exception
 end
 
 # Structure used to call the compile-time tests.

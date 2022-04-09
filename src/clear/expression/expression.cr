@@ -63,7 +63,7 @@ class Clear::Expression
   #   and defining the method `to_sql`.
   module Literal
     abstract def to_sql
-    abstract def to_json(x : ::JSON::Builder)
+    abstract def to_json(x : JSON::Builder)
   end
 
   # Wrap an unsafe string. Useful to cancel-out the

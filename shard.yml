@@ -23,8 +23,7 @@ dependencies:
     github: anykeyh/generate.cr
     branch: master
   pg:
-    github: place-labs/crystal-pg
-    branch: master
+    github: will/crystal-pg
   inflector:
     github: anykeyh/inflector.cr
     branch: master
